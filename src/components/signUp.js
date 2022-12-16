@@ -103,11 +103,30 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
+                  id="Number"
+                  label="Phone Number"
+                  name="Number"
+                  autoComplete="Phone Number"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
                   name="password"
                   label="Password"
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="date"
+                  type="date"
+                  defaultValue="2022-12-17"
                 />
               </Grid>
               <Grid item xs={12}>
