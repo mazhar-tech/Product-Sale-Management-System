@@ -12,6 +12,9 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
+import { useState } from "react";
+
+import { Navigate } from "react-router-dom";
 function Copyright(props) {
   return (
     <Typography
@@ -32,14 +35,25 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function SignIn() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+export default function AdminSignIn() {
+  const [enteredEmail, setEnteredEmail] = useState("");
+  const [enteredPassword, setEnteredPassword] = useState("");
+  const [isUser, setIsUser] = useState(false);
+
+  const checkCredentials = async () => {
+    const response = await fetch("http://localhost:3001/users");
+    const jsonData = await response.json();
+
+    let filterData = jsonData.filter(
+      (user) =>
+        user.email.includes(enteredEmail) &&
+        user.password.includes(enteredPassword)
+    );
+
+    if (filterData.length > 0) {
+      localStorage.setItem("loggedUser", JSON.stringify(filterData[0].name));
+      setIsUser(true);
+    }
   };
 
   return (
@@ -62,7 +76,7 @@ export default function SignIn() {
           </Typography>
           <Box
             component="form"
-            onSubmit={handleSubmit}
+            // onSubmit={handleSubmit}
             noValidate
             sx={{ mt: 1 }}
           >
@@ -75,6 +89,7 @@ export default function SignIn() {
               name="email"
               autoComplete="email"
               autoFocus
+              onChange={(e) => setEnteredEmail(e.target.value)}
             />
             <TextField
               margin="normal"
@@ -85,6 +100,7 @@ export default function SignIn() {
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={(e) => setEnteredPassword(e.target.value)}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
@@ -95,6 +111,7 @@ export default function SignIn() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              onClick={checkCredentials}
             >
               Sign In
             </Button>
@@ -105,7 +122,7 @@ export default function SignIn() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="admin/signUp" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
@@ -114,6 +131,7 @@ export default function SignIn() {
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
+      {isUser && <Navigate to="/" replace={true} />}
     </ThemeProvider>
   );
 }

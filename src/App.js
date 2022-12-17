@@ -1,15 +1,15 @@
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
-import SignIn from "./components/signin";
-import SignUp from "./components/signUp";
-import Dashboard from "./components/dashboard/Dashboard";
+import AdminSignIn from "./components/Admin signin";
+import AdminSignUp from "./components/Admin signUp";
+import AdminDashboard from "./dashboard/Admin Dashboard"
 function App() {
   return (
     <div>
       <Routes>
-        <Route path="/" element={<Dashboard />}></Route>
-        <Route path="/signin" element={<SignIn />}></Route>
-        <Route path="/signUp" element={<SignUp />}></Route>
+        <Route path="/" element={<AdminDashboard />}></Route>
+        <Route path="admin/signin" element={<AdminSignIn />}></Route>
+        <Route path="admin/signUp" element={<AdminSignUp />}></Route>
       </Routes>
     </div>
   );
